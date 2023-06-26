@@ -1,0 +1,3 @@
+[run]
+source=oildjango_pro
+omit = */tests/*, */migrations/*, */config.py, */baker_recipes.py, *_multischema.py, *conftest.py
