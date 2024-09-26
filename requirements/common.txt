@@ -1,6 +1,6 @@
-Django==3.2
+Django==5.0
 
-boto3==1.24.13
+boto3==1.35.28
 dj-database-url==0.5.0
 djoser==2.1.0
 django-anymail[amazon_ses]==8.6
@@ -10,17 +10,16 @@ django-extensions==3.1.5
 django-filter==22.1
 django-model-utils==4.2.0
 django-safedelete==1.2.2
-django-simple-history==3.1.1
+django-simple-history==3.7.0
 django-storages==1.12.3
 django-storage-url==0.8.1
 django-tenant-schemas==1.11.0
-djangorestframework==3.13.1
-drf-nested-routers==0.93.4
+djangorestframework==3.15.2
 faker==13.13.0
 ipython==8.4.0
 jsonschema==4.6.0
 markdown==3.3.7
-model-bakery==1.5.0
+model-bakery==1.19.5
 Pillow==9.1.1
 psycopg2-binary==2.9.3
 pyyaml==6.0

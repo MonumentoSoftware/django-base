@@ -56,10 +56,12 @@ urlpatterns = [
     # API
     path('', api_root),
     path('api/v1/', include((apps_patterns, 'v1'), namespace='v1')),
-    path('api/docs/', login_required(TemplateView.as_view(
-        template_name='docs/swagger-ui.html',
-        extra_context={'schema_url': 'openapi-schema'}
-    )), name='swagger-ui'),
+    path('api/docs/', login_required(
+        TemplateView.as_view(
+            template_name='docs/swagger-ui.html',
+            extra_context={'schema_url': 'openapi-schema'}
+        )
+    ), name='swagger-ui'),
 
     # Testing
     path('sentry-debug/', trigger_error),

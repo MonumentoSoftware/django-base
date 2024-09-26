@@ -21,7 +21,8 @@ from sentry_sdk.integrations.django import DjangoIntegration
 env = environ.Env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
 
 # A simple slug name for the deploy environment
 STAGE = env.str('STAGE', None)
@@ -59,6 +60,7 @@ THIRD_PARTY_APPS = [
     'anymail',
     'corsheaders',
     'django_extensions',
+    'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
@@ -69,7 +71,6 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'apps.user.config.UserConfig',
 ]
-
 
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -161,15 +162,27 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+# Storages
+
+# Default STORAGES from Django documentation
+# See:
+# https://docs.djangoproject.com/en/5.0/ref/settings/#std-setting-STORAGES
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
+
+# Use ManifestStaticFilesStorage when not in debug mode
+if not DEBUG:
+    STORAGES['staticfiles'] = {"BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -187,10 +200,6 @@ DEFAULT_STORAGE_DSN = env.str('DEFAULT_STORAGE_DSN', '')
 
 # dsn_configured_storage_class() requires the name of the setting
 DefaultStorageClass = dsn_configured_storage_class('DEFAULT_STORAGE_DSN')
-
-# Django's DEFAULT_FILE_STORAGE requires the class name
-# To upload your media files to S3 set
-DEFAULT_FILE_STORAGE = 'conf.settings.common.DefaultStorageClass'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data/media/')
