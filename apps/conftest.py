@@ -1,5 +1,4 @@
 import pytest
-from model_bakery import baker
 
 from django.contrib.auth import get_user_model
 

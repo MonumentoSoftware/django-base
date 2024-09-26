@@ -1,27 +1,44 @@
-# OilDjango-Pro [![build](https://github.com/MonumentoSoftware/django-base/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/MonumentoSoftware/django-base/actions/workflows/main.yml) 
+# Django Base [![build](https://github.com/MonumentoSoftware/django-base/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/MonumentoSoftware/django-base/actions/workflows/main.yml) 
 
-For professional managament of energy industries assets
+A clean and simple Django project template.
+Used as a base for Monumento Software OilDjangoPro
 
-## Como rodar
+- [Django Base ](#django-base-)
+- [Install](#install)
+- [Usage](#usage)
+  - [Database seed](#database-seed)
+  - [Documentação da API](#documentação-da-api)
+    - [Interface gráfica](#interface-gráfica)
+    - [Incrementando a documentação](#incrementando-a-documentação)
+  - [Unit Testing](#unit-testing)
+    - [Test Coverage](#test-coverage)
+  - [Architecture](#architecture)
+  - [Useful Commands](#useful-commands)
+    - [Create an app](#create-an-app)
+    - [Enter a container](#enter-a-container)
+    - [Open the Django shell](#open-the-django-shell)
+    - [Reset the database](#reset-the-database)
+    - [Update translations from English](#update-translations-from-english)
 
-Se for a primeira vez:
+# Install 
+
+Basic installation:
 ```bash
 make setup_install
 ```
+You can also create a virtual environment:
 
-Depois, apenas:
-```bash
-make up
-```
-
-### Opcional
-
-Criar ambiente virtual:
 ```bash
 make setup_venv
 ```
+# Usage
+To start the project, run the following command:
+```bash
+make up
+```
+## Database seed
 
-Rodar seed do banco:
+Seed the database:
 ```bash
 make seed
 ```
@@ -30,73 +47,73 @@ make seed
 
 ### Interface gráfica
 
-Usamos a Swagger UI, para exibir a documentação, em formato OpenAPI, numa interface gráfica no navegador. Para rodar localmente apenas o container da documentação, seguir os passos:
+We use Swagger UI to document the API. To access it, follow the steps:
 
-1. Rodar `docker-compose up swagger-ui`
-2. Acessar *localhost:8080*
+1. Run the project with `make up`.
+2. Access `http://localhost:8000/swagger/`.
 
 ### Incrementando a documentação
 
-O arquivo *docs/openapi.json* descreve a API utilizando a especificação OpenAPI. Ele deve ser editado manualmente ao longo do tempo de vida do projeto para deixar a documentação em conformidade com a API. Uma ferramenta que pode acelerar este processo é o comando *genarateschema* do Django REST Framework. Ele pode ser usado para gerar a documentação automática do projeto baseada nas views existentes. No entanto, deve-se ter cuidado pra não sobrescrever o arquivo original *openapi.json*. Para utilizar a ferramenta, seguir o tutorial:
+The file *docs/openapi.json* describes the API using the OpenAPI specification. It must be manually edited over the project's lifetime to keep the documentation in compliance with the API. A tool that can speed up this process is the *generateschema* command from Django REST Framework. It can be used to generate the project's automatic documentation based on the existing views. However, care must be taken not to overwrite the original *openapi.json* file. To use the tool, follow the tutorial:
 
-1. Rodar o comando `make generate_schema` para criar o arquivo **docs/temp-schema.json**.
-2. Identificar no arquivo gerado a parte desejada (exemplo: alguma *view* nova) e mover para **docs/openapi.json**.
-3. Excluir o arquivo **docs/temp-schema.json**.
+1. Run the command `make generate_schema` to create the file **docs/temp-schema.json**.
+2. Identify the desired part in the generated file (e.g., some new *view*) and move it to **docs/openapi.json**.
+3. Delete the file **docs/temp-schema.json**.
 
-## Testes unitários
+## Unit Testing
 
-Utilizamos a biblioteca **pytest** para rodar testes unitários. Seu arquivo de configuração é *pytest.ini*.
+We use the **pytest** library to run unit tests. Its configuration file is *pytest.ini*.
 
-- Para rodas os testes, usar o comando `make test`.
+- To run the tests, use the command `make test`.
 
-Como por padrão os testes reutilizam o banco de dados gerado, caso tenha novas migrações é necessário re-criar o banco.
+Since tests reuse the generated database by default, if there are new migrations, it is necessary to recreate the database.
 
-- Para re-criar o banco, utilizar o comando `pytest --create-db`.
+- To recreate the database, use the command `pytest --create-db`.
 
-### Cobertura de teste
+### Test Coverage
 
 - `make coverage`
 
-ou
+or
 
-- `make coverage_html`, para um relatório HTML.
+- `make coverage_html`, for an HTML report.
 
-## Arquitetura
+## Architecture
 
-- `apps`: aqui devem estar todas as django apps locais que devem ser criadas ao longo do desenvolvimento do projeto. No projeto base esta pasta conterá apenas a app `user` (e a `tenant`, se for um projeto tenant-based). Para criar uma nova app, deve-se usar o comando *make startapp* na raiz do projeto para criá-la no lugar correto e seguindo o template do projeto base.
-- `conf`: módulo que contém arquivos de configuração do projeto.
-    - `app_template`: template usado para criação de novas apps. Geralmente, não deve ser alterado.
-    - `settings`: pasta com os arquivos settings do django. É modularizado de forma a possuir um arquivo de settings para cada ambiente: local, production, etc.
-    - `urls.py`: arquivo de urls do projeto. É preferível deixar apenas incluir as urls das outras apps, deixando a configuração específica de cada módulo em seu próprio arquivo urls.py.
-    - `wsgi.py`: arquivo wsgi padrão do Django para deploy.
-- `docs`: módulo que contém arquivos relacionados à documentação do projeto.
-    - `openapi.json`: arquivo contendo schema da API REST. É usado no container *swagger-ui*.
-- `lib`: módulo que contém as classes que devem ser compartilhada por todo o projeto, como por exemplo um model base, uma view genérica, etc.
-    - `models.py`: contém models base para o projeto que automaticamente incluem campos de timestamp (created_at ou updated_at) ou safe delete feature.
-- `requirements`: contém as dependências do projeto, separadas por ambiente (local, production, etc.).
-- `scripts`: contém shell scripts úteis para o projeto.
-- `env.example`: arquivo env de exemplo para iniciar o projeto. Deve ser copiado para um arquivo `.env` (não versionado).
-- `docker-compose.yml` e `Dockerfile`: arquivos de configuração Docker.
-- `Makefile`: contém comandos úteis, como por exemplo entrar num container ou criar uma app.
+- `apps`: here should be all the local Django apps that should be created throughout the project's development. In the base project, this folder will only contain the `user` app (and the `tenant`, if it is a tenant-based project). To create a new app, use the *make startapp* command at the project's root to create it in the correct place and following the base project's template.
+- `conf`: module containing the project's configuration files.
+    - `app_template`: template used for creating new apps. Generally, it should not be altered.
+    - `settings`: folder with Django settings files. It is modularized to have a settings file for each environment: local, production, etc.
+    - `urls.py`: project's URL file. It is preferable to only include the URLs of other apps, leaving the specific configuration of each module in its own urls.py file.
+    - `wsgi.py`: standard Django WSGI file for deployment.
+- `docs`: module containing files related to the project's documentation.
+    - `openapi.json`: file containing the REST API schema. It is used in the *swagger-ui* container.
+- `lib`: module containing classes that should be shared throughout the project, such as a base model, a generic view, etc.
+    - `models.py`: contains base models for the project that automatically include timestamp fields (created_at or updated_at) or safe delete feature.
+- `requirements`: contains the project's dependencies, separated by environment (local, production, etc.).
+- `scripts`: contains useful shell scripts for the project.
+- `env.example`: example env file to start the project. It should be copied to a `.env` file (not versioned).
+- `docker-compose.yml` and `Dockerfile`: Docker configuration files.
+- `Makefile`: contains useful commands, such as entering a container or creating an app.
 
-## Comandos úteis
+## Useful Commands
 
-### Criar uma app
+### Create an app
 
 `make startapp [app_name]`
 
-### Entrar em um container
+### Enter a container
 
 `make enter [service_name]`
 
-### Abrir o django shell
+### Open the Django shell
 
 `make shell`
 
-### Resetar o banco de dados
+### Reset the database
 
-`make reset_db`
+`make reset_schema`
 
-### Atualizar traduções do inglês
+### Update translations from English
 
 `make compilemessages`

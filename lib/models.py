@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 # Model mixins
 #
 
+
 class TimeStampedMixin(models.Model):
     """
     Add timestamp control to a model.
@@ -21,6 +22,7 @@ class TimeStampedMixin(models.Model):
 #
 # Model base classes with mixin combinations
 #
+
 
 class BaseModel(TimeStampedMixin, models.Model):
     """
