@@ -1,4 +1,4 @@
-# Django Base [![build](https://github.com/MonumentoSoftware/django-base/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/MonumentoSoftware/django-base/actions/workflows/main.yml) 
+# Django Base Monumento [![build](https://github.com/MonumentoSoftware/django-base/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/MonumentoSoftware/django-base/actions/workflows/main.yml) 
 
 A clean and simple Django project template.
 Used as a base for Monumento Software OilDjangoPro
